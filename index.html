@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NICE | SHERE FILE 4K</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1f0404 0%, #0a0101 60%, #000000 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 15px;
+            perspective: 1200px;
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+            transform-style: preserve-3d;
+            animation: floatContainer 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatContainer {
+            0% { transform: translateY(0px) rotateX(0deg); }
+            100% { transform: translateY(-4px) rotateX(1deg); }
+        }
+
+        /* Khung 4D Glassmorphism 4K */
+        .card-box {
+            background: rgba(15, 12, 12, 0.88);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 50, 50, 0.6);
+            border-radius: 24px;
+            padding: 35px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(255, 0, 0, 0.4), inset 0 0 20px rgba(255, 51, 51, 0.15), 0 0 80px rgba(255, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card-box h2 {
+            color: #ff3333;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            font-size: 22px;
+            letter-spacing: 2.5px;
+            text-shadow: 0 0 15px rgba(255, 51, 51, 0.8), 0 0 30px rgba(255, 0, 0, 0.4);
+            font-weight: 900;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            color: #ff8080;
+            margin-bottom: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(8, 6, 6, 0.95);
+            border: 1px solid rgba(255, 51, 51, 0.35);
+            border-radius: 14px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5);
+            outline: none;
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            border-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.6), inset 0 2px 6px rgba(0,0,0,0.8);
+            transform: translateY(-1px);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff3333 0%, #b30000 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 8px 25px rgba(255, 51, 51, 0.6), inset 0 1px 2px rgba(255,255,255,0.4);
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+            box-shadow: 0 12px 35px rgba(255, 51, 51, 0.8), inset 0 1px 3px rgba(255,255,255,0.6);
+            transform: translateY(-3px);
+        }
+
+        .switch-auth {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .switch-auth span {
+            color: #ff3333;
+            cursor: pointer;
+            font-weight: bold;
+            transition: color 0.2s;
+            text-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+        }
+
+        .switch-auth span:hover {
+            color: #ff8080;
+            text-decoration: underline;
+        }
+
+        .error-msg {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-bottom: 15px;
+            display: none;
+            background: rgba(255, 51, 51, 0.15);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 51, 51, 0.5);
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+        }
+
+        #auth-screen, #key-screen, #main-screen {
+            display: none;
+        }
+
+        /* Thanh thông tin User 4D */
+        .user-header {
+            background: rgba(18, 14, 14, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.7), inset 0 0 15px rgba(255, 51, 51, 0.1);
+            text-align: center;
+        }
+
+        .user-info {
+            margin-bottom: 14px;
+            word-break: break-all;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        .user-info span {
+            color: #ff3333;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
+        }
+
+        .header-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .logout-btn {
+            background: rgba(255, 51, 51, 0.15);
+            color: #ff3333;
+            border: 1px solid rgba(255, 51, 51, 0.5);
+            padding: 10px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s;
+            flex: 1;
+            text-transform: uppercase;
+        }
+
+        .logout-btn:hover {
+            background: #ff3333;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.7);
+        }
+
+        .admin-panel-btn {
+            background: linear-gradient(135deg, #00ffcc 0%, #008866 100%);
+            color: #000;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 900;
+            transition: all 0.2s;
+            flex: 1;
+            display: none;
+            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.5);
+            text-transform: uppercase;
+        }
+
+        .admin-panel-btn:hover {
+            opacity: 0.95;
+            box-shadow: 0 8px 25px rgba(0, 255, 204, 0.8);
+            transform: translateY(-1px);
+        }
+
+        /* Modal Admin Panel 4D */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .admin-content {
+            background: rgba(12, 10, 10, 0.98);
+            border: 1px solid #00ffcc;
+            border-radius: 22px;
+            padding: 30px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.5), inset 0 0 20px rgba(0, 255, 204, 0.15);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .admin-content h3 {
+            color: #00ffcc;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 18px;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.8);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        .result-key-box {
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px dashed #00ffcc;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 12px;
+            word-break: break-all;
+            font-family: monospace;
+            color: #00ffcc;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+            box-shadow: inset 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 26px;
+            color: #ff3333;
+            margin-bottom: 20px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 51, 51, 0.8), 0 0 40px rgba(255, 0, 0, 0.4);
+            font-weight: 900;
+        }
+
+        /* 🌟 FIX KHUNG CHAT / PARTY: HIỆN 1 KHÚC GỌN GÀNG Ở GIỮA, KHÔNG FULL MÀN HÌNH */
+        #broadcast-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .broadcast-box {
+            background: rgba(18, 14, 14, 0.98);
+            border: 2px solid #ffd700;
+            border-radius: 22px;
+            padding: 28px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.15);
+            animation: zoomInPopup 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes zoomInPopup {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .broadcast-box h2 {
+            color: #ffd700;
+            font-size: 18px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+
+        .broadcast-msg {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 18px;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .party-timer {
+            font-size: 24px;
+            color: #00ffcc;
+            font-weight: 900;
+            font-family: monospace;
+            margin-bottom: 15px;
+            background: rgba(0, 255, 204, 0.12);
+            border: 1px dashed #00ffcc;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+        }
+
+        /* HỆ THỐNG TAB CHUYỂN ĐỔI (4D STYLE) */
+        .tab-menu {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(22, 18, 18, 0.9);
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            border-radius: 14px;
+            color: #aaa;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #ff3333 0%, #990000 100%);
+            color: #fff;
+            border-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.7), inset 0 1px 2px rgba(255,255,255,0.4);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .coming-soon-badge {
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px dashed #ffd700;
+            color: #ffd700;
+            text-align: center;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 900;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+        }
+
+        /* Thanh tìm kiếm 4D */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(15, 12, 12, 0.9);
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.8), 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .search-box input:focus {
+            border-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.6), inset 0 3px 6px rgba(0,0,0,0.8);
+        }
+
+        /* Danh sách Card file 4D */
+        .card {
+            background: rgba(18, 14, 14, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255,255,255,0.1);
+            margin-bottom: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            border-color: rgba(255, 51, 51, 0.7);
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 20px 45px rgba(255, 51, 51, 0.35), inset 0 1px 2px rgba(255,255,255,0.2);
+        }
+
+        .config-title {
+            font-size: 11px;
+            color: #ff3333;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+            font-weight: 900;
+            text-shadow: 0 0 8px rgba(255, 51, 51, 0.4);
+        }
+
+        .config-title-roblox {
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: #fff;
+            font-weight: 900;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .script-direct-box {
+            width: 100%;
+            height: 95px;
+            background: rgba(8, 6, 6, 0.95);
+            border: 1px dashed #ffd700;
+            border-radius: 12px;
+            color: #00ffcc;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            resize: none;
+            margin-bottom: 12px;
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 900;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #ff3333 0%, #990000 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(255, 51, 51, 0.5);
+        }
+
+        .btn-download.locked, .btn-script.locked, .btn-updating {
+            background: #333 !important;
+            color: #777 !important;
+            cursor: not-allowed;
+            box-shadow: none !important;
+            opacity: 0.5;
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .support-box {
+            margin-top: 25px;
+            background: rgba(18, 14, 14, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .support-email {
+            color: #4da6ff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+            text-shadow: 0 0 8px rgba(77, 166, 255, 0.4);
+        }
+
+        .support-email:hover {
+            color: #80c2ff;
+            text-decoration: underline;
+        }
+
+        /* Toast 4K nổi */
+        .toast {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: rgba(0, 255, 204, 0.95);
+            backdrop-filter: blur(10px);
+            color: #000;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 900;
+            border: 1px solid #fff;
+            box-shadow: 0 10px 30px rgba(0, 255, 204, 0.7);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 6000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- OVERLAY ADMIN CHAT / ADMIN PARTY (GỌN GÀNG 1 KHÚC Ở GIỮA) -->
+    <div id="broadcast-overlay">
+        <div class="broadcast-box">
+            <h2 id="broadcast-title">📢 THÔNG BÁO TỪ ADMIN</h2>
+            <div id="party-timer-display" class="party-timer" style="display:none;">05:00</div>
+            <div id="broadcast-message" class="broadcast-msg">Đang tải nội dung...</div>
+            <button class="action-btn" onclick="closeBroadcastOverlay()">Đóng / Ẩn Tạm Thời</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- 1. MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
+        <div id="auth-screen">
+            <div class="card-box">
+                <h2 id="auth-title">Đăng Nhập SHERE FILE</h2>
+                <div id="error-msg" class="error-msg"></div>
+                
+                <div class="input-group">
+                    <label>Tài khoản</label>
+                    <input type="text" id="username" placeholder="Nhập tài khoản...">
+                </div>
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" id="password" placeholder="Nhập mật khẩu...">
+                </div>
+
+                <button class="action-btn" id="auth-action-btn" onclick="handleAuth()">Đăng Nhập</button>
+                
+                <div class="switch-auth" id="switch-text">
+                    Chưa có tài khoản? <span onclick="toggleMode()">Đăng ký ngay</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. MÀN HÌNH GET KEY KHI HẾT HẠN -->
+        <div id="key-screen">
+            <div class="card-box">
+                <h2>Hết Hạn / Cần Get Key</h2>
+                <div id="key-error-msg" class="error-msg"></div>
+                
+                <p style="font-size: 13px; color: #aaa; margin-bottom: 20px; line-height: 1.6;">
+                    Tài khoản đang trong thời gian test 1 phút hoặc đã hết hạn. Vui lòng bấm Get Key để mở khóa tính năng!
+                </p>
+
+                <a href="https://nicephn.github.io/getkey/" target="_blank" class="action-btn" style="background: linear-gradient(135deg, #00ffcc 0%, #008866 100%); color:#000; margin-bottom: 15px;">🔑 Get Key Ngay</a>
+
+                <div class="input-group">
+                    <label>Nhập Key đã lấy được vào đây</label>
+                    <input type="text" id="key-input" placeholder="Dán key vào đây...">
+                </div>
+
+                <button class="action-btn" onclick="verifyKey()">Xác Nhận Key</button>
+            </div>
+        </div>
+
+        <!-- 3. MÀN HÌNH CHÍNH -->
+        <div id="main-screen">
+            <!-- Thông tin tài khoản, Rank & Trạng thái Key -->
+            <div class="user-header">
+                <div class="user-info">
+                    👤 Tài khoản: <span id="display-user"></span><br>
+                    ⭐ Rank: <span id="display-rank"></span><br>
+                    🔑 Gói Key: <span id="display-key-type" style="color: #ffff00;">Key test 1min</span><br>
+                    ⏳ Hết hạn trong: <span id="countdown-timer" style="color: #00ffcc;">--:--:--</span>
+                </div>
+                <div class="header-btn-group">
+                    <button class="logout-btn" onclick="logout()">🚪 Thoát</button>
+                    <button class="admin-panel-btn" id="adminBtn" onclick="openAdminPanel()">⚡ Admin Panel</button>
+                </div>
+            </div>
+
+            <h1>NICE | SHERE FILE</h1>
+
+            <!-- HỆ THỐNG TAB CHUYỂN ĐỔI (FREE FIRE / ROBLOX) -->
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="switchTab('freefire')">🔥 Free Fire</button>
+                <button class="tab-btn" onclick="switchTab('roblox')">⚡ Roblox</button>
+            </div>
+
+            <!-- TAB 1: FREE FIRE -->
+            <div id="tab-freefire" class="tab-content active">
+                <div class="search-box">
+                    <input type="text" id="searchInputFF" placeholder="🔍 Tìm kiếm file mod Free Fire..." onkeyup="searchFiles('FF')">
+                </div>
+                <div id="file-list-ff"></div>
+            </div>
+
+            <!-- TAB 2: ROBLOX -->
+            <div id="tab-roblox" class="tab-content">
+                <div class="coming-soon-badge">⚠️ Script do admin coming soon ⚠️</div>
+
+                <div class="search-box">
+                    <input type="text" id="searchInputRBX" placeholder="🔍 Tìm kiếm script Roblox..." onkeyup="searchFiles('RBX')">
+                </div>
+                <div id="file-list-rbx"></div>
+            </div>
+
+            <!-- PHẦN HỖ TRỢ -->
+            <div class="support-box">
+                <a href="mailto:nguyenkhang100526@gmail.com" class="support-email">nguyenkhang100526@gmail.com</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ADMIN PANEL MODAL -->
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-content">
+            <button class="close-modal" onclick="closeAdminPanel()">✕</button>
+            <h3>⚡ Admin Panel (Nice)</h3>
+            
+            <div class="input-group">
+                <label>Hành động Admin</label>
+                <select id="adminActionType" onchange="switchAdminMode()">
+                    <option value="lock_update">1. Unlock / Update</option>
+                    <option value="add_menu">2. Add script / menu</option>
+                    <option value="delete_menu">3. Xóa menu / script</option>
+                    <option value="user_target">4. Chỉnh thời gian cho tài khoản player</option>
+                    <option value="extend">5. Chỉnh thời gian cho tôi</option>
+                    <option value="create">6. Tạo key mới</option>
+                    <option value="party">7. Admin party ( mini games)</option>
+                    <option value="chat">8. Admin chat</option>
+                </select>
+            </div>
+
+            <!-- 1. Unlock / Update -->
+            <div id="lockUpdateSection">
+                <div class="input-group">
+                    <label>Chọn Menu cần thay đổi trạng thái</label>
+                    <select id="lockTargetMenu"></select>
+                </div>
+                <div class="input-group">
+                    <label>Trạng thái mới</label>
+                    <select id="lockTargetStatus">
+                        <option value="updating">Đang Cập Nhật (Khóa tải)</option>
+                        <option value="normal">Hoạt động bình thường (Mở tải)</option>
+                    </select>
+                </div>
+                <button class="action-btn" onclick="adminToggleMenuUpdate()">Cập Nhật Trạng Thái Menu</button>
+            </div>
+
+            <!-- 2. Add script / menu -->
+            <div id="addMenuSection" style="display: none;">
+                <div class="input-group">
+                    <label>Danh mục (Tab)</label>
+                    <select id="newMenuTab">
+                        <option value="FF">Free Fire (APK / File)</option>
+                        <option value="RBX">Roblox (Script Lua)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Tên Menu / Cấu hình</label>
+                    <input type="text" id="newMenuTitle" placeholder="Ví dụ: SHIN MOD V5.0">
+                </div>
+                <div class="input-group">
+                    <label>Mô tả ngắn</label>
+                    <input type="text" id="newMenuDesc" placeholder="Ví dụ: Phiên bản mới nhất đỉnh cao">
+                </div>
+                <div class="input-group">
+                    <label>Link tải MediaFire hoặc Link Script (loadstring)</label>
+                    <textarea id="newMenuLink" placeholder="Dán link tải hoặc loadstring vào đây..." style="height: 70px; font-family: monospace; font-size: 12px;"></textarea>
+                </div>
+                <button class="action-btn" style="background: linear-gradient(135deg, #00ffcc 0%, #008866 100%); color:#000;" onclick="adminSaveMenu()">Thêm / Cập Nhật Menu</button>
+            </div>
+
+            <!-- 3. Xóa menu / script -->
+            <div id="deleteMenuSection" style="display: none;">
+                <div class="input-group">
+                    <label>Chọn Menu cần xóa vĩnh viễn</label>
+                    <select id="deleteTargetMenu"></select>
+                </div>
+                <button class="action-btn" style="background: linear-gradient(135deg, #ff3333 0%, #990000 100%);" onclick="adminDeleteMenu()">Xóa Menu Này Vĩnh Viễn</button>
+            </div>
+
+            <!-- 4. Chỉnh thời gian cho tài khoản player -->
+            <div id="targetUserSection" style="display: none;">
+                <div class="input-group">
+                    <label>Tên tài khoản người dùng cần chỉnh</label>
+                    <input type="text" id="targetUsername" placeholder="Nhập username của khách...">
+                </div>
+                <div class="input-group">
+                    <label>Số giờ mới</label>
+                    <input type="number" id="targetHours" placeholder="Nhập số giờ..." value="24">
+                </div>
+                <button class="action-btn" onclick="adminSetUserHours()">Cập nhật giờ cho user này</button>
+            </div>
+
+            <!-- 5. Chỉnh thời gian cho tôi -->
+            <div id="extendSection" style="display: none;">
+                <div class="input-group">
+                    <label>Số giờ hiệu lực của tôi</label>
+                    <input type="number" id="extendHours" placeholder="Nhập số giờ..." value="24">
+                </div>
+                <button class="action-btn" onclick="adminExtendKey()">Cập nhật thời hạn</button>
+            </div>
+
+            <!-- 6. Tạo key mới -->
+            <div id="createSection" style="display: none;">
+                <div class="input-group">
+                    <label>Thời hạn key mới (Giờ)</label>
+                    <input type="number" id="newKeyHours" placeholder="Nhập số giờ..." value="24">
+                </div>
+                <button class="action-btn" style="background: linear-gradient(135deg, #00ffcc 0%, #008866 100%); color:#000;" onclick="adminCreateKey()">Tạo Key Mới</button>
+                <div id="resultKeyBox" class="result-key-box"></div>
+            </div>
+
+            <!-- 7. Admin party ( mini games) -->
+            <div id="partySection" style="display: none;">
+                <p style="font-size: 12px; color: #ffd700; margin-bottom: 12px; line-height: 1.5;">
+                    Hệ thống sẽ tự động chọn ngẫu nhiên 1 trong 5 câu đố cho người chơi và kích hoạt đồng hồ đếm ngược 5 phút!
+                </p>
+                <button class="action-btn" style="background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%); color:#000;" onclick="adminLaunchParty()">🚀 Phát Động Admin Party Ngay</button>
+            </div>
+
+            <!-- 8. Admin chat -->
+            <div id="chatSection" style="display: none;">
+                <div class="input-group">
+                    <label>Tin nhắn gửi toàn màn hình người chơi</label>
+                    <input type="text" id="adminBroadcastMsg" placeholder="Nhập thông báo từ Admin..." value="Thông báo quan trọng từ Admin Nice!">
+                </div>
+                <button class="action-btn" style="background: linear-gradient(135deg, #ff3333 0%, #990000 100%);" onclick="adminBroadcastChat()">📢 Gửi tin nhắn thông báo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hộp thoại Toast thông báo nổi -->
+    <div id="toast" class="toast">Thông báo thành công!</div>
+
+    <script>
+        let isRegisterMode = false;
+        let timerInterval = null;
+        let partyCountdownInterval = null;
+
+        const defaultMenus = [
+            { id: "menu_an", tab: "FF", title: "MENU ÂN", desc: "Menu ẩn Free Fire cho iOS & Android (No Key)", link: "https://www.mediafire.com/file/9xe4flyejx20lys/MENU+NO+KEY+IOS+-+ADR.zip/file#ob55", type: "apk", status: "normal" },
+            { id: "mth_v38", tab: "FF", title: "MTH TEAM PROXY V38", desc: "Phiên bản MTH Team Proxy v38 mới nhất", link: "https://www.mediafire.com/file/f30pn890kqnvi4/Mthteam-proxy-v38.apk/file", type: "apk", status: "updating" },
+            { id: "brabo_v4", tab: "FF", title: "BRABO V4", desc: "Phiên bản Brabo Proxy 4.0 mới nhất", link: "https://www.mediafire.com/file/lygxwwvrki7m3h5/Brabo+Proxy+4.0.apk/file", type: "apk", status: "normal" },
+            { id: "shin_v41", tab: "FF", title: "SHIN MOD V4.1 CRACK", desc: "Phiên bản Shin Mod Cheat 4.1 Crack By Hihi mới nhất", link: "https://www.mediafire.com/file/mp6gww6wnb7wizp/Shin_Mod_Cheat_4.1_Crack_By_Hihi.apk/file?dkey=5zm3atwydqe&r=810", type: "apk", status: "updating" },
+            { id: "reimod_v33", tab: "FF", title: "REIMOD V33", desc: "Phiên bản REIMOD V33 FINAL mới nhất · Ghim tâm đỉnh cao !!!", link: "https://www.mediafire.com/file/x4v1r4zf70b0r31/REIMOD_V33_FINAL.apk/file", type: "apk", status: "updating" },
+            { id: "madara_v31", tab: "FF", title: "MADARA V31", desc: "Phiên bản MADARA V31 mới nhất", link: "https://www.mediafire.com/file/8ladpm0pavpdgie/MADARA+V31.apk/file", type: "apk", status: "normal" },
+            { id: "venyx_chilli", tab: "RBX", title: "VENYX X CHILLI", desc: "Bản script Roblox độc quyền từ hệ thống", link: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/gojosatoru751/scriptdz/refs/heads/main/chillixvenyxreal.lua"))()', type: "script", status: "normal" }
+        ];
+
+        const questionPool = [
+            { q: "10 + 10 bằng mấy?", a: "20" },
+            { q: "Thủ đô của Việt Nam là gì?", a: "hà nội" },
+            { q: "Free Fire do công ty nào phát hành?", a: "garena" },
+            { q: "1 năm có bao nhiêu ngày (năm không nhuận)?", a: "365" },
+            { q: "Trò chơi sinh tồn nhảy dù bắn súng phổ biến viết tắt là gì?", a: "ff" }
+        ];
+
+        window.onload = function() {
+            renderMenus();
+            const currentUser = localStorage.getItem('nice_user');
+            if (currentUser) {
+                checkKeyStatus(currentUser);
+                checkGlobalBroadcast();
+                checkActiveParty();
+            } else {
+                document.getElementById('auth-screen').style.display = 'block';
+            }
+        }
+
+        function getMenuList() {
+            let saved = localStorage.getItem('nice_menu_list');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            localStorage.setItem('nice_menu_list', JSON.stringify(defaultMenus));
+            return defaultMenus;
+        }
+
+        function renderMenus() {
+            let menus = getMenuList();
+            let ffContainer = document.getElementById('file-list-ff');
+            let rbxContainer = document.getElementById('file-list-rbx');
+            let lockSelect = document.getElementById('lockTargetMenu');
+            let deleteSelect = document.getElementById('deleteTargetMenu');
+
+            ffContainer.innerHTML = '';
+            rbxContainer.innerHTML = '';
+            lockSelect.innerHTML = '';
+            deleteSelect.innerHTML = '';
+
+            menus.forEach((item, index) => {
+                let opt = document.createElement('option');
+                opt.value = item.title;
+                opt.innerText = "[" + item.tab + "] " + item.title + (item.status === 'updating' ? " (Đang khóa)" : "");
+                lockSelect.appendChild(opt);
+
+                let optDel = document.createElement('option');
+                optDel.value = item.title;
+                optDel.innerText = "[" + item.tab + "] " + item.title;
+                deleteSelect.appendChild(optDel);
+
+                let card = document.createElement('div');
+                card.className = "card search-item-" + item.tab.toLowerCase();
+                card.setAttribute('data-name', item.title.toLowerCase() + " " + item.desc.toLowerCase());
+
+                if (item.type === 'apk') {
+                    let isUpdating = item.status === 'updating';
+                    card.innerHTML = `
+                        <div class="config-title">Cấu hình ${index + 1}</div>
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-desc">${item.desc}</div>
+                        <div class="card-actions">
+                            ${isUpdating ? `<button class="btn btn-updating" disabled>⚙️ Đang Cập Nhật</button>` : `<a href="${item.link}" class="btn btn-download install-link" target="_blank" onclick="checkDownload(event)">⚙️ Cài đặt</a>`}
+                            <button class="btn btn-copy" onclick="copyText('${item.title}')">📋 Copy tên</button>
+                        </div>
+                    `;
+                    if (item.tab === 'FF') ffContainer.appendChild(card);
+                } else if (item.type === 'script') {
+                    let isUpdating = item.status === 'updating';
+                    card.innerHTML = `
+                        <div class="config-title config-title-roblox">Roblox Script VIP</div>
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-desc">${item.desc}</div>
+                        <textarea class="script-direct-box" readonly onclick="this.select()">${item.link}</textarea>
+                        <div class="card-actions">
+                            ${isUpdating ? `<button class="btn btn-updating" disabled>📋 Đang Cập Nhật</button>` : `<button class="btn btn-script script-link" onclick="copyDirectScript(this)">📋 Copy Script</button>`}
+                            <button class="btn btn-copy" onclick="copyText('${item.title}')">📋 Copy tên</button>
+                        </div>
+                    `;
+                    if (item.tab === 'RBX') rbxContainer.appendChild(card);
+                }
+            });
+
+            let currentUser = localStorage.getItem('nice_user');
+            if (currentUser) {
+                let keyDesc = localStorage.getItem('key_desc_' + currentUser) || "";
+                let canDownload = !keyDesc.includes("test");
+                const downloadBtns = document.querySelectorAll('.install-link, .script-link');
+                downloadBtns.forEach(btn => {
+                    if (!canDownload) btn.classList.add('locked');
+                    else btn.classList.remove('locked');
+                });
+            }
+        }
+
+        function adminToggleMenuUpdate() {
+            let targetTitle = document.getElementById('lockTargetMenu').value;
+            let newStatus = document.getElementById('lockTargetStatus').value;
+            let menus = getMenuList();
+
+            let found = menus.find(m => m.title === targetTitle);
+            if (found) {
+                found.status = newStatus;
+                localStorage.setItem('nice_menu_list', JSON.stringify(menus));
+                renderMenus();
+                closeAdminPanel();
+                showToast("Đã cập nhật trạng thái menu [" + targetTitle + "] thành công!");
+            }
+        }
+
+        function adminSaveMenu() {
+            let tab = document.getElementById('newMenuTab').value;
+            let title = document.getElementById('newMenuTitle').value.trim();
+            let desc = document.getElementById('newMenuDesc').value.trim();
+            let link = document.getElementById('newMenuLink').value.trim();
+
+            if (!title || !link) {
+                alert("Vui lòng nhập đầy đủ Tên Menu và Link/Script!");
+                return;
+            }
+
+            let type = (tab === 'RBX' || link.startsWith('loadstring') || link.includes('http') && link.includes('lua')) ? 'script' : 'apk';
+            if (tab === 'RBX') type = 'script';
+
+            let menus = getMenuList();
+            let existingIndex = menus.findIndex(m => m.title.toLowerCase() === title.toLowerCase());
+
+            if (existingIndex >= 0) {
+                menus[existingIndex].desc = desc || menus[existingIndex].desc;
+                menus[existingIndex].link = link;
+                menus[existingIndex].tab = tab;
+                menus[existingIndex].type = type;
+                showToast("Đã cập nhật menu [" + title + "] thành công!");
+            } else {
+                let newItem = {
+                    id: "menu_" + Math.random().toString(36).substring(2, 7),
+                    tab: tab,
+                    title: title,
+                    desc: desc || "Phiên bản mới nhất",
+                    link: link,
+                    type: type,
+                    status: "normal"
+                };
+                menus.push(newItem);
+                showToast("Đã thêm menu mới [" + title + "] thành công!");
+            }
+
+            localStorage.setItem('nice_menu_list', JSON.stringify(menus));
+            renderMenus();
+            closeAdminPanel();
+
+            document.getElementById('newMenuTitle').value = '';
+            document.getElementById('newMenuDesc').value = '';
+            document.getElementById('newMenuLink').value = '';
+        }
+
+        function adminDeleteMenu() {
+            let targetTitle = document.getElementById('deleteTargetMenu').value;
+            let menus = getMenuList();
+
+            let filtered = menus.filter(m => m.title !== targetTitle);
+            if (filtered.length === menus.length) {
+                alert("Không tìm thấy menu cần xóa!");
+                return;
+            }
+
+            if (confirm("Bạn có chắc chắn muốn xóa vĩnh viễn menu [" + targetTitle + "] không?")) {
+                localStorage.setItem('nice_menu_list', JSON.stringify(filtered));
+                renderMenus();
+                closeAdminPanel();
+                showToast("Đã xóa vĩnh viễn menu [" + targetTitle + "]!");
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            if (tabName === 'freefire') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('tab-freefire').classList.add('active');
+            } else if (tabName === 'roblox') {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('tab-roblox').classList.add('active');
+            }
+        }
+
+        function toggleMode() {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('auth-title').innerText = isRegisterMode ? "Đăng Ký SHERE FILE" : "Đăng Nhập SHERE FILE";
+            document.getElementById('auth-action-btn').innerText = isRegisterMode ? "Đăng Ký" : "Đăng Nhập";
+            document.getElementById('switch-text').innerHTML = isRegisterMode 
+                ? 'Đã có tài khoản? <span onclick="toggleMode()">Đăng nhập ngay</span>' 
+                : 'Chưa có tài khoản? <span onclick="toggleMode()">Đăng ký ngay</span>';
+            document.getElementById('error-msg').style.display = 'none';
+        }
+
+        function handleAuth() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const errorBox = document.getElementById('error-msg');
+
+            if (!user || !pass) {
+                errorBox.innerText = "Vui lòng nhập đầy đủ thông tin!";
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            if (isRegisterMode) {
+                if (localStorage.getItem('acc_' + user)) {
+                    errorBox.innerText = "Tài khoản này đã tồn tại!";
+                    errorBox.style.display = 'block';
+                    return;
+                }
+                localStorage.setItem('acc_' + user, pass);
+                
+                let defaultExp = new Date().getTime() + (1 * 60 * 1000);
+                localStorage.setItem('key_time_' + user, defaultExp);
+                localStorage.setItem('key_desc_' + user, "Key test 1min");
+                localStorage.setItem('nice_user', user);
+                localStorage.setItem('nice_rank', "Member");
+
+                checkKeyStatus(user);
+            } else {
+                let rank = "Member";
+                
+                if (user === "AdminNiceprime" && pass === "admin1m8deptrai") {
+                    rank = "development";
+                    localStorage.setItem('nice_user', user);
+                    localStorage.setItem('nice_rank', rank);
+                    const infiniteTime = new Date().getTime() + (3650 * 24 * 60 * 60 * 1000);
+                    localStorage.setItem('key_time_' + user, infiniteTime);
+                    localStorage.setItem('key_desc_' + user, "Vĩnh viễn (Admin)");
+                    checkKeyStatus(user);
+                    return;
+                }
+
+                if (user === "Niceprimedeptrai" && pass === "nice1m8") {
+                    rank = "Admin";
+                } else {
+                    const storedPass = localStorage.getItem('acc_' + user);
+                    if (!storedPass || storedPass !== pass) {
+                        errorBox.innerText = "Sai tài khoản hoặc mật khẩu!";
+                        errorBox.style.display = 'block';
+                        return;
+                    }
+                }
+
+                localStorage.setItem('nice_user', user);
+                localStorage.setItem('nice_rank', rank);
+                checkKeyStatus(user);
+            }
+        }
+
+        function checkKeyStatus(username) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('key-screen').style.display = 'none';
+            
+            const rank = localStorage.getItem('nice_rank');
+            if (username === "AdminNiceprime" && rank === "development") {
+                document.getElementById('adminBtn').style.display = "block";
+                showMainScreen(username, rank, "Vĩnh viễn (Development)", true);
+                document.getElementById('countdown-timer').innerText = "Vĩnh viễn";
+                return;
+            }
+
+            const keyData = localStorage.getItem('key_time_' + username);
+            const keyDesc = localStorage.getItem('key_desc_' + username) || "Key test 1min";
+            const now = new Date().getTime();
+
+            if (keyData && now < parseInt(keyData)) {
+                let isTest = keyDesc.includes("test");
+                showMainScreen(username, rank || "Member", keyDesc, !isTest);
+                startCountdown(parseInt(keyData));
+            } else {
+                document.getElementById('key-screen').style.display = 'block';
+            }
+        }
+
+        function verifyKey() {
+            const keyVal = document.getElementById('key-input').value.trim();
+            const errorBox = document.getElementById('key-error-msg');
+            const currentUser = localStorage.getItem('nice_user');
+
+            let hours = 0;
+            let descText = "Key VIP Bản Quyền";
+
+            if (keyVal.startsWith("Nice_")) {
+                let customHours = localStorage.getItem('custom_key_' + keyVal);
+                if (customHours) {
+                    hours = parseInt(customHours);
+                    descText = "Key VIP (" + hours + "h)";
+                } else {
+                    hours = 24;
+                    descText = "Key VIP (24h)";
+                }
+            } else if (keyVal.length >= 5) {
+                hours = 24;
+                descText = "Key Get VIP (24h)";
+            }
+
+            if (hours > 0) {
+                const expireTime = new Date().getTime() + (hours * 60 * 60 * 1000);
+                localStorage.setItem('key_time_' + currentUser, expireTime);
+                localStorage.setItem('key_desc_' + currentUser, descText);
+
+                document.getElementById('key-screen').style.display = 'none';
+                let rank = localStorage.getItem('nice_rank') || "Member";
+                
+                showMainScreen(currentUser, rank, descText, true);
+                startCountdown(expireTime);
+                showToast("Xác thực Key thành công! Đã mở khóa.");
+            } else {
+                errorBox.innerText = "Key không hợp lệ! Vui lòng nhập đúng mã đã get.";
+                errorBox.style.display = 'block';
+            }
+        }
+
+        function startCountdown(expireTime) {
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                const currentUser = localStorage.getItem('nice_user');
+                let latestKeyTime = localStorage.getItem('key_time_' + currentUser);
+                if (latestKeyTime && parseInt(latestKeyTime) !== expireTime) {
+                    expireTime = parseInt(latestKeyTime);
+                    let newDesc = localStorage.getItem('key_desc_' + currentUser);
+                    if (newDesc) document.getElementById('display-key-type').innerText = newDesc;
+                }
+
+                const now = new Date().getTime();
+                const distance = expireTime - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    alert("Thời gian test 1 phút đã kết thúc! Vui lòng thực hiện Get Key để tiếp tục.");
+                    localStorage.removeItem('key_time_' + currentUser);
+                    location.reload();
+                    return;
+                }
+
+                const totalSeconds = Math.floor(distance / 1000);
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                document.getElementById('countdown-timer').innerText = 
+                    (hours < 10 ? "0" + hours : hours) + ":" + 
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                    (seconds < 10 ? "0" + seconds : seconds);
+            }, 1000);
+        }
+
+        function showMainScreen(username, rank, keyDesc, canDownload) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('key-screen').style.display = 'none';
+            document.getElementById('main-screen').style.display = 'block';
+            document.getElementById('display-user').innerText = username;
+            document.getElementById('display-rank').innerText = rank;
+            document.getElementById('display-key-type').innerText = keyDesc;
+
+            const downloadBtns = document.querySelectorAll('.install-link, .script-link');
+            downloadBtns.forEach(btn => {
+                if (!canDownload) {
+                    btn.classList.add('locked');
+                } else {
+                    btn.classList.remove('locked');
+                }
+            });
+        }
+
+        function checkDownload(event) {
+            const currentUser = localStorage.getItem('nice_user');
+            const keyDesc = localStorage.getItem('key_desc_' + currentUser) || "";
+            if (keyDesc.includes("test")) {
+                event.preventDefault();
+                showToast("⚠️ Đang trong thời gian test 1 phút, không thể cài đặt!");
+            }
+        }
+
+        function copyDirectScript(btn) {
+            const currentUser = localStorage.getItem('nice_user');
+            const keyDesc = localStorage.getItem('key_desc_' + currentUser) || "";
+            if (keyDesc.includes("test")) {
+                showToast("⚠️ Đang trong thời gian test 1 phút, không thể copy script!");
+                return;
+            }
+
+            const card = btn.closest('.card');
+            const textarea = card.querySelector('.script-direct-box');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+
+            try {
+                navigator.clipboard.writeText(textarea.value);
+            } catch (err) {
+                document.execCommand('copy');
+            }
+
+            showToast("⚡ Đã sao chép Roblox Script thành công!");
+        }
+
+        function logout() {
+            localStorage.removeItem('nice_user');
+            localStorage.removeItem('nice_rank');
+            if (timerInterval) clearInterval(timerInterval);
+            location.reload();
+        }
+
+        function openAdminPanel() {
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        function switchAdminMode() {
+            let mode = document.getElementById('adminActionType').value;
+            document.getElementById('lockUpdateSection').style.display = (mode === 'lock_update') ? 'block' : 'none';
+            document.getElementById('addMenuSection').style.display = (mode === 'add_menu') ? 'block' : 'none';
+            document.getElementById('deleteMenuSection').style.display = (mode === 'delete_menu') ? 'block' : 'none';
+            document.getElementById('targetUserSection').style.display = (mode === 'user_target') ? 'block' : 'none';
+            document.getElementById('extendSection').style.display = (mode === 'extend') ? 'block' : 'none';
+            document.getElementById('createSection').style.display = (mode === 'create') ? 'block' : 'none';
+            document.getElementById('partySection').style.display = (mode === 'party') ? 'block' : 'none';
+            document.getElementById('chatSection').style.display = (mode === 'chat') ? 'block' : 'none';
+        }
+
+        function adminSetUserHours() {
+            let targetUser = document.getElementById('targetUsername').value.trim();
+            let newHours = parseInt(document.getElementById('targetHours').value);
+
+            if (!targetUser) {
+                alert("Vui lòng nhập tên tài khoản cần chỉnh!");
+                return;
+            }
+            if (!newHours || newHours <= 0) {
+                alert("Vui lòng nhập số giờ hợp lệ!");
+                return;
+            }
+
+            const now = new Date().getTime();
+            let newExpireTime = now + (newHours * 60 * 60 * 1000);
+            let descText = "Admin give me " + newHours + "h";
+
+            localStorage.setItem('key_time_' + targetUser, newExpireTime);
+            localStorage.setItem('key_desc_' + targetUser, descText);
+
+            closeAdminPanel();
+            showToast("Đã cấp " + newHours + "h cho [" + targetUser + "]");
+        }
+
+        function adminExtendKey() {
+            let newHours = parseInt(document.getElementById('extendHours').value);
+            if (!newHours || newHours <= 0) {
+                alert("Vui lòng nhập số giờ hợp lệ!");
+                return;
+            }
+            const currentUser = localStorage.getItem('nice_user');
+            const now = new Date().getTime();
+            let newExpireTime = now + (newHours * 60 * 60 * 1000);
+            let descText = "Admin give me " + newHours + "h";
+
+            localStorage.setItem('key_time_' + currentUser, newExpireTime);
+            localStorage.setItem('key_desc_' + currentUser, descText);
+
+            document.getElementById('display-key-type').innerText = descText;
+            
+            const downloadBtns = document.querySelectorAll('.install-link, .script-link');
+            downloadBtns.forEach(btn => btn.classList.remove('locked'));
+
+            startCountdown(newExpireTime);
+            closeAdminPanel();
+
+            showToast("Đã cập nhật thành Admin give me " + newHours + "h");
+        }
+
+        function adminCreateKey() {
+            let hours = parseInt(document.getElementById('newKeyHours').value);
+            if (!hours || hours <= 0) {
+                alert("Vui lòng nhập thời hạn hợp lệ cho key!");
+                return;
+            }
+            let randomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            let generatedKey = "Nice_" + randomCode;
+
+            localStorage.setItem('custom_key_' + generatedKey, hours);
+
+            let descStr = "Admin give me " + hours + "h";
+            let resultBox = document.getElementById('resultKeyBox');
+            resultBox.innerText = generatedKey + " (" + descStr + ")";
+            resultBox.style.display = 'block';
+            
+            const tempBox = document.createElement('textarea');
+            tempBox.value = generatedKey;
+            document.body.appendChild(tempBox);
+            tempBox.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempBox);
+
+            showToast("Đã tạo key mới (" + hours + "h) - Đã copy!");
+        }
+
+        function adminLaunchParty() {
+            let randomQ = questionPool[Math.floor(Math.random() * questionPool.length)];
+
+            let partyData = {
+                question: randomQ.q,
+                answer: randomQ.a,
+                endTime: new Date().getTime() + (5 * 60 * 1000)
+            };
+
+            localStorage.setItem('active_admin_party', JSON.stringify(partyData));
+            localStorage.removeItem('party_solved_' + localStorage.getItem('nice_user'));
+
+            closeAdminPanel();
+            showToast("🚀 Đã kích hoạt Admin Party (5 phút) thành công!");
+            triggerPartyBroadcast(partyData);
+        }
+
+        function adminBroadcastChat() {
+            let msg = document.getElementById('adminBroadcastMsg').value.trim();
+            if (!msg) {
+                alert("Vui lòng nhập nội dung tin nhắn!");
+                return;
+            }
+
+            let broadcastData = {
+                message: msg,
+                time: new Date().getTime()
+            };
+
+            localStorage.setItem('admin_global_broadcast', JSON.stringify(broadcastData));
+            closeAdminPanel();
+            showToast("📢 Đã gửi tin nhắn thông báo!");
+            triggerChatBroadcast(msg);
+        }
+
+        function triggerPartyBroadcast(partyData) {
+            const overlay = document.getElementById('broadcast-overlay');
+            const title = document.getElementById('broadcast-title');
+            const timerDisplay = document.getElementById('party-timer-display');
+            const messageBox = document.getElementById('broadcast-message');
+
+            title.innerText = "⚡ ADMIN PARTY (THỬ THÁCH 5 PHÚT - NHẬN KEY 67H)";
+            timerDisplay.style.display = 'block';
+
+            messageBox.innerHTML = "<b>Câu hỏi:</b> " + partyData.question + "<br><br><input type='text' id='partyUserInput' placeholder='Nhập đáp án của bạn...' style='width:100%; padding:10px; border-radius:10px; border:1px solid #ffd700; background:#080606; color:#fff; margin-top:5px;'><button class='action-btn' style='background:#ffd700; color:#000; margin-top:10px;' onclick='submitPartyAnswer()'>Nộp Đáp Án</button>";
+
+            overlay.style.display = 'flex';
+            startPartyLiveTimer(partyData.endTime);
+        }
+
+        function triggerChatBroadcast(msg) {
+            const overlay = document.getElementById('broadcast-overlay');
+            const title = document.getElementById('broadcast-title');
+            const timerDisplay = document.getElementById('party-timer-display');
+            const messageBox = document.getElementById('broadcast-message');
+
+            title.innerText = "📢 THÔNG BÁO TỪ ADMIN";
+            timerDisplay.style.display = 'none';
+            messageBox.innerText = msg;
+
+            overlay.style.display = 'flex';
+        }
+
+        function startPartyLiveTimer(endTime) {
+            if (partyCountdownInterval) clearInterval(partyCountdownInterval);
+
+            partyCountdownInterval = setInterval(() => {
+                let now = new Date().getTime();
+                let distance = endTime - now;
+
+                if (distance < 0) {
+                    clearInterval(partyCountdownInterval);
+                    document.getElementById('party-timer-display').innerText = "00:00 (ĐÃ HẾT GIỜ)";
+                    return;
+                }
+
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('party-timer-display').innerText = 
+                    (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                    (seconds < 10 ? "0" + seconds : seconds);
+            }, 1000);
+        }
+
+        function closeBroadcastOverlay() {
+            document.getElementById('broadcast-overlay').style.display = 'none';
+            if (partyCountdownInterval) clearInterval(partyCountdownInterval);
+        }
+
+        function checkGlobalBroadcast() {
+            let lastMsgTime = localStorage.getItem('seen_broadcast_time') || 0;
+            let broadcast = JSON.parse(localStorage.getItem('admin_global_broadcast') || '{}');
+
+            if (broadcast.time && broadcast.time > parseInt(lastMsgTime)) {
+                localStorage.setItem('seen_broadcast_time', broadcast.time);
+                if (localStorage.getItem('nice_rank') !== 'development' && localStorage.getItem('nice_rank') !== 'Admin') {
+                    triggerChatBroadcast(broadcast.message);
+                }
+            }
+        }
+
+        function checkActiveParty() {
+            let party = JSON.parse(localStorage.getItem('active_admin_party') || '{}');
+            let now = new Date().getTime();
+
+            if (party.endTime && now < party.endTime) {
+                let currentUser = localStorage.getItem('nice_user');
+                let solved = localStorage.getItem('party_solved_' + currentUser);
+                if (!solved && localStorage.getItem('nice_rank') !== 'development') {
+                    triggerPartyBroadcast(party);
+                }
+            }
+        }
+
+        function submitPartyAnswer() {
+            let userAns = document.getElementById('partyUserInput').value.trim();
+            let party = JSON.parse(localStorage.getItem('active_admin_party') || '{}');
+            let currentUser = localStorage.getItem('nice_user');
+            let now = new Date().getTime();
+
+            if (now > party.endTime) {
+                alert("⏰ Đã hết thời gian 5 phút của Party này!");
+                closeBroadcastOverlay();
+                return;
+            }
+
+            if (userAns.toLowerCase() === party.answer.toLowerCase()) {
+                let expireTime = new Date().getTime() + (67 * 60 * 60 * 1000);
+                localStorage.setItem('key_time_' + currentUser, expireTime);
+                localStorage.setItem('key_desc_' + currentUser, "Admin Party Reward (67h)");
+                localStorage.setItem('party_solved_' + currentUser, 'true');
+
+                alert("🎉 Chúc mừng bạn đã trả lời đúng! Nhận thành công Key VIP 67 tiếng!");
+                location.reload();
+            } else {
+                alert("❌ Đáp án chưa chính xác! Hãy thử lại.");
+            }
+        }
+
+        function searchFiles(type) {
+            if (type === 'FF') {
+                let input = document.getElementById('searchInputFF').value.toLowerCase();
+                let items = document.querySelectorAll('.search-item-ff');
+                items.forEach(item => {
+                    let name = item.getAttribute('data-name');
+                    item.style.display = name.includes(input) ? "" : "none";
+                });
+            } else if (type === 'RBX') {
+                let input = document.getElementById('searchInputRBX').value.toLowerCase();
+                let items = document.querySelectorAll('.search-item-rbx');
+                items.forEach(item => {
+                    let name = item.getAttribute('data-name');
+                    item.style.display = name.includes(input) ? "" : "none";
+                });
+            }
+        }
+
+        function copyText(text) {
+            const tempBox = document.createElement('textarea');
+            tempBox.value = text;
+            document.body.appendChild(tempBox);
+            tempBox.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempBox);
+
+            showToast("Đã copy: " + text);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
